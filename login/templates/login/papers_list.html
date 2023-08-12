@@ -1,0 +1,62 @@
+{% extends 'login/base.html' %}
+
+{% block title %}List of papers{% endblock title %}
+
+{% block body %}
+{% comment %} <a href="/login/dashboard/list-of-conference/" style="text-decoration: none;" ><h5 class="my-2 px-4" >Back</h5></a> {% endcomment %}
+
+          {% if paper %}
+          <div class="container my-4">
+               <table class="table table-bordered">
+                   <thead class="thead-dark">
+                       <tr>
+                           <th scope="col">Paper Id</th>
+                           <th scope="col">Paper Title</th>
+                           <th scope="col">Auth Name</th>
+                           <th scope="col">Conference Name</th>
+                           <th scope="col">User Email</th>
+                           <th scope="col">Paper Description</th>
+                           <th scope="col">Paper</th>
+                           <th scope="col">Date Of Submit</th>
+                           <th scope="col">Expiry Date</th>
+                           {% comment %} <th scope="col">Status</th> {% endcomment %}
+                           <th scope="col">Modify Status</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       {% for paper in paper %}
+                       <tr>
+                           <th scope="row">{{ paper.id }}</th>
+                           <td>{{ paper.title_paper }}</td>
+                           <td>{{ paper.Auth_name }}</td>
+                           <td>{{ paper.conference }}</td>
+                           <td>{{ paper.user }}</td>
+                           <td>{{ paper.paper_description }}</td>
+                           <td><a href="/media/{{ paper.paper_upload }}">{{ paper.paper_upload }}</a></td>
+                           <td>{{ paper.start_date }}</td>
+                           <td>{{ paper.expiry_date }}</td>
+                           {% comment %} <td style="text-transform: capitalize;">{{ paper.status }}</td> {% endcomment %}
+                           <td>
+                              <form method="post" action="{% url 'update_paper_status' selected_paper_id=paper.id %}">
+                                  {% csrf_token %}
+                                  <div class="input-group d-flex justify-content-center">
+                                      <select class="form-select" name="status" style="width: auto;">
+                                          {% for choice in paper.STATUS_CHOICES %}
+                                          <option value="{{ choice.0 }}" {% if choice.0 == paper.status %}selected{% endif %}>
+                                              {{ choice.1 }}
+                                          </option>
+                                          {% endfor %}
+                                      </select>
+                                      <button class="btn btn-primary my-1" style="border-radius: 10px;" type="submit">Update</button>
+                                  </div>
+                              </form>
+                          </td>                                                   
+                       </tr>
+                       {% endfor %}
+                   </tbody>
+               </table>
+           </div>           
+          {% else %}
+               <h4 class="my-4" style="text-align: center;color: red;" >No Paper Is Publish Here Yet</h4>
+     {% endif %}
+{% endblock body %}

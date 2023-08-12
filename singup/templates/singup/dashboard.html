@@ -1,0 +1,76 @@
+{% extends 'singup/base.html' %}
+{% block title %}Dashboard{% endblock title %}
+{% block body %}
+
+<center class="my-4" >
+  <h1 class="text-uppercase">WellCome {{uname}} </h1>
+</center>
+
+{% comment %} <div class="container my-4">    
+  <table class="table table-bordered">
+       <thead>
+       <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">List</th>
+            <th scope="col">Create</th>
+            <th scope="col">View</th>
+       </tr>
+       </thead>
+       <tbody>
+            <tr>
+                 <th scope="row">1</th>
+                 <td>Conference</td>
+                 <td>
+                      <button type="submit" class="btn btn-success"><a style="text-decoration: none;color: aliceblue;"
+                           href="/singup/success/list-of-conference/">List Conference</a></button>
+                 </td>
+                 <td>
+                      <button type="submit" class="btn btn-success"><a style="text-decoration: none;color: aliceblue;"
+                           href="/singup/success/list-of-conference/">View Conference</a></button>
+                 </td>
+            </tr>
+            <tr>
+                 <th scope="row">2</th>
+                 <td>Paper</td>
+                 <td><button type="submit" class="btn btn-success"><a style="text-decoration: none;color: aliceblue;"
+                      href="/singup/success/upload/">Submit A Paper</a></button>
+
+                 </td>
+                 <td>
+                      <button type="submit" class="btn btn-success"><a style="text-decoration: none;color: aliceblue;"
+                           href="/singup/success/list-of-Papers/">Submited Papers</a></button>
+                 </td>
+            </tr>
+       </tbody>
+  </table>
+</div> {% endcomment %}
+
+{% if conference %}
+<div class="container my-4">
+     <table class="table table-bordered">
+         <thead class="thead-dark">
+             <tr>
+                 <th scope="col">S.No</th>
+                 <th scope="col">Conference Name</th>
+                 <th scope="col">Conference Description</th>
+                 <th scope="col">Starting Date</th>
+                 <th scope="col">End Date</th>
+             </tr>
+         </thead>
+         <tbody>
+             {% for conference in conference %}
+             <tr>
+                 <th scope="row">{{ conference.id }}</th>
+                 <td><a class="text-primary" href="{% url 'conference_detail' conf_id=conference.id %}">{{ conference.conference_name }}</a></td>
+                 <td>{{ conference.conference_descriptions }}</td>
+                 <td>{{ conference.conference_start_date }}</td>
+                 <td>{{ conference.conference_end_date }}</td>
+             </tr>
+             {% endfor %}
+         </tbody>
+     </table>
+ </div>
+ 
+{% endif %}
+
+{% endblock body %}
