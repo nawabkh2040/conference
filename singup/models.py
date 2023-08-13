@@ -77,6 +77,7 @@ class paper(models.Model):
      other_auth_affiliation = models.CharField(max_length=100, default='No affiliation')
      other_auth_mobile = models.CharField(max_length=20, default='N/A')
      paper_keyword = models.CharField(max_length=100, default='No keywords')
+     version = models.PositiveIntegerField(default=1)
     
 
      def __str__(self):

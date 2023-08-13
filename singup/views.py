@@ -33,8 +33,7 @@ def singup_view(request):
         email = request.POST.get('email')
         number = request.POST.get('number')
         password = request.POST.get('password')
-        # hashed_password = make_password(password)
-        print(email, name)
+        # print(email, name)
         if CustomUser.objects.filter(email=email).exists():
                 context = {'error_message': 'This email is already registered.'}
                 return render(request, 'singup/singup.html',context)        
@@ -48,18 +47,16 @@ def singup_view(request):
             my_user.is_active = False
             my_user.save()
             # welcome Email Function
-            subject = "WELCOME TO SDBC CONFERENCE"
+            # subject = "WELCOME TO SDBC CONFERENCE"
             subject2= "Email Verification SDBC Conference"
-            messages = "Hello "+my_user.name+"  !!\n"+"Welcome to SDBC Conference \n"+"Your Account is under the Verification Process .\n"+"You Get A Another Mail & It Content the verification link. You Have to Click it. Then Your Account will Activated :-)  "
+            # messages = "Hello "+my_user.name+"  !!\n"+"Welcome to SDBC Conference \n"+"Your Account is under the Verification Process .\n"+"You Get A Another Mail & It Content the verification link. You Have to Click it. Then Your Account will Activated :-)  "
             from_email =settings.EMAIL_HOST_USER
             to_list = [my_user.email]
-            send_mail(subject, messages, from_email, to_list, fail_silently=True)
+            # send_mail(subject, messages, from_email, to_list, fail_silently=True)
             # Confirmation Email
-
             current_site = get_current_site(request)
             uidb64 = urlsafe_base64_encode(force_bytes(my_user.id))
             token = default_token_generator.make_token(my_user)
-
             context1 = {
                 'name': my_user.name,
                 'domain': current_site.domain,
@@ -97,12 +94,9 @@ def singIn(request):
             return render(request, 'singup/singIn.html', context)
     else:
         return render(request, 'singup/singIn.html')
-    # return HttpResponse("User Success Full Login")
 def logout_page(request):
     logout(request)
     return redirect('/')
-
-
 def success_view(request):
     # Your view logic here
     # if User is authenticated:
@@ -116,10 +110,7 @@ def success_view(request):
         }
         return render(request, 'singup/dashboard.html',context)
     else:
-        return redirect('singin')
-     
-
-     
+        return redirect('singin') 
 def activate(request, uidb64, token):
     try:
         uidb64 = force_str(urlsafe_base64_decode(uidb64))
@@ -136,7 +127,7 @@ def activate(request, uidb64, token):
         return render(request,'singup/activation-failed.html')
 """
 
-def upload(request, conf_id):
+def resubmit(request, conf_id):
     if request.user.is_authenticated:
         conf_instance = get_object_or_404(conference, id=conf_id)
         conf_ins= conference.objects.all()
@@ -191,6 +182,51 @@ def upload(request, conf_id):
         return render(request, 'singup/singIn.html')
 
 """
+def resubmit(request,paper_id):
+    if request.user.is_authenticated:
+        user = request.user
+        original_paper = get_object_or_404(paper, id=paper_id)
+        if request.method=="POST":
+            paper_title=request.POST.get('title_paper')
+            Auth_name=request.POST.get('Auth_name')
+            paper_description=request.POST.get('paper_description')
+            pdf_upload = request.FILES.get('pdf_upload')
+            resubmit_paper=paper(
+                user=original_paper.user,
+                status=original_paper.status,
+                conference=original_paper.conference,
+                title_paper=paper_title,
+                Auth_name=Auth_name,
+                paper_description=paper_description,
+                paper_upload=pdf_upload,
+                Auth_affiliation=original_paper.Auth_affiliation,
+                Auth_email=original_paper.Auth_email,
+                Auth_mobile=original_paper.Auth_mobile,
+                corresponding_auth_name=original_paper.corresponding_auth_name,
+                corresponding_auth_email=original_paper.corresponding_auth_email,
+                corresponding_auth_mobile=original_paper.corresponding_auth_mobile,
+                corresponding_auth_affiliation=original_paper.corresponding_auth_affiliation,
+                other_auth_mobile=original_paper.other_auth_mobile,
+                other_auth_email=original_paper.other_auth_email,
+                other_auth_name=original_paper.other_auth_name,
+                other_auth_affiliation=original_paper.other_auth_affiliation,
+                version=original_paper.version + 1
+
+            )
+            resubmit_paper.save()
+            context = {
+                'error_message': 'Successfully Upload Your Paper',
+                "original_paper":get_object_or_404(paper, id=paper_id),
+                "fname":user.name,
+                }
+            return render(request, 'singup/resubmit.html',context)
+            
+        context={
+            "original_paper":get_object_or_404(paper, id=paper_id),
+            "user":request.user,
+            "fname":user.name,
+        }
+        return render(request,'singup/resubmit.html',context)
 
 def submit_paper(request,conf_id):
     if request.user.is_authenticated:
@@ -253,11 +289,13 @@ def submit_paper(request,conf_id):
         return redirect('signIn')
 
 
-def list_of_paper(request):
+def list_of_paper(request,conf_id):
     if request.user.is_authenticated:
         user = request.user
-        papers_uploaded = paper.objects.filter(user=user)
-        return render(request, 'singup/list_of_paper.html', {'papers_uploaded': papers_uploaded})
+        context={
+            'papers_uploaded':paper.objects.filter(user=user,conference_id=conf_id)
+        }
+        return render(request, 'singup/list_of_paper.html',context)
     else:
         return render(request, 'singup/singIn.html')
 

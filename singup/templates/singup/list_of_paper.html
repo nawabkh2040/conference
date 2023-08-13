@@ -14,8 +14,8 @@
                     <th scope="col">Paper Description</th>
                     <th scope="col">Paper </th>
                     <th scope="col">Date Of Submit</th>
-                    <th scope="col">Expiry Date</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Resubmit</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -27,14 +27,19 @@
                     <td>{{paper.paper_description}}</td>
                     <td><a href="/media/{{paper.paper_upload}}  ">{{paper.paper_upload}}</a> </td>
                     <td>{{paper.start_date}}</td>
-                    <td>{{paper.expiry_date}}</td>
-                    <td>{{paper.status}}</td>
+                    <td style="text-transform: capitalize;" >{{paper.status}}</td>
+                    <td><a href="{% url 'resubmit' paper_id=paper.id %}"><button class="btn btn-primary">Resubmit</button></a></td>
                     </tr>
                     {% endfor%}
                     </tbody>
                </table>
           </div>
+     {% else %}
+          <h4 class="my-4" style="text-align: center;color: red;" >No Paper Submitted In This Conference </h4>
      {% endif %}
+     <div class="mt-4">
+          <a class="btn btn-secondary" href="../">Back</a>
+      </div>
 </div>
 
 {% endblock body %}

@@ -10,20 +10,21 @@
      <p class="mb-4"><h4>Conference Description:</h4> {{ conf_instance.conference_descriptions }}</p>
      <p><h5>Start Date:</h5> {{ conf_instance.conference_start_date }}</p>
      <p><h5>End Date:</h5> {{ conf_instance.conference_end_date }}</p>
-     {% if papers_uploaded.exists %}
-         {% with latest_paper=papers_uploaded.last %}
+     {% comment %} {% if papers_uploaded.exists %}
+         {% with latest_paper=papers_uploaded.last %} {% endcomment %}
          <div class="mt-4">
-             <h4 class="text-uppercase">Status: <span class="text-primary">{{ latest_paper.status }}</span></h4>
-             <a class="btn btn-success mt-2" href="/media/{{ latest_paper.paper_upload }}">View Submitted Paper</a>
-             <a class="btn btn-warning mt-2" href="{% url 'submit' conf_id=conf_instance.id %}">Resubmit Paper</a>
+             {% comment %} <h4 class="text-uppercase">Status:{% url 'list_of_paper' conf_id=conf_instance.id  %}</h4> {% endcomment %}
+             <a class="btn btn-warning mt-2" href="{% url 'list_of_paper' conf_id=conf_instance.id  %}">Status</a>
+             {% comment %} <a class="btn btn-success mt-2" href="/media/{{ latest_paper.paper_upload }}">View Submitted Paper</a> {% endcomment %}
+             <a class="btn btn-success mt-2" href="{% url 'submit' conf_id=conf_instance.id %}">Submit Paper</a>
          </div>
-         {% endwith %}
-     {% else %}
-         <div class="mt-4">
+         {% comment %} {% endwith %} {% endcomment %}
+     {% comment %} {% else %} {% endcomment %}
+         {% comment %} <div class="mt-4">
              <h4 class="text-uppercase">Status: <span class="text-danger">No Paper Submitted</span></h4>
              <a class="btn btn-primary mt-2" href="{% url 'submit' conf_id=conf_instance.id %}">Submit Paper</a>
-         </div>
-     {% endif %}
+         </div> {% endcomment %}
+     {% comment %} {% endif %} {% endcomment %}
      <div class="mt-4">
          <a class="btn btn-secondary" href="/singup/success/list-of-conference/">Back</a>
      </div>
