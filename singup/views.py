@@ -213,18 +213,26 @@ def submit_paper(request,conf_id):
             other_auth_mobile=request.POST.get('other_auth_mobile')
             paper_keyword=request.POST.get('paper_keyword')
             paper_description=request.POST.get('paper_description')
-            paper_upload=request.POST.get('paper_upload')
+            pdf_upload = request.FILES.get('pdf_upload')
+            print(pdf_upload)
             new_paper=paper.objects.create(
-                title_paper=title_paper,Auth_name=Auth_name,
-                paper_description=paper_description,
-                Auth_email=Auth_email,Auth_affiliation=Auth_affiliation,
-                Auth_mobile=Auth_mobile,corresponding_auth_name=corresponding_auth_name,
+                user=user,
+                title_paper=title_paper,
+                Auth_name=Auth_name,
+                Auth_email=Auth_email,
+                Auth_affiliation=Auth_affiliation,
+                Auth_mobile=Auth_mobile,
+                corresponding_auth_name=corresponding_auth_name,
                 corresponding_auth_email=corresponding_auth_email,
                 corresponding_auth_affiliation=corresponding_auth_affiliation,
-                corresponding_auth_mobile=corresponding_auth_mobile,other_auth_name=other_auth_name,
-                other_auth_email=other_auth_email,other_auth_affiliation=other_auth_affiliation,
-                other_auth_mobile=other_auth_mobile,paper_keyword=paper_keyword,
-                paper_upload=paper_upload,
+                corresponding_auth_mobile=corresponding_auth_mobile,
+                other_auth_name=other_auth_name,
+                other_auth_email=other_auth_email,
+                other_auth_affiliation=other_auth_affiliation,
+                other_auth_mobile=other_auth_mobile,
+                paper_keyword=paper_keyword,
+                paper_description=paper_description,
+                paper_upload=pdf_upload,
                 status='pending',
                 conference=conf_instance,
             )

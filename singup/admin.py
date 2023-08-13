@@ -9,7 +9,7 @@ from .models import *
 # admin.site.register(singup,SingUPAdmin)
 
 class PaperAdmin(admin.ModelAdmin):
-    list_display=('id','user','conference','title_paper','Auth_name','paper_description','paper_upload','start_date','expiry_date','status','has_uploaded_paper')
+    list_display=('id','user','conference','title_paper','Auth_name','paper_description','paper_upload','start_date','status','has_uploaded_paper')
     list_filter = ('status',)
 admin.site.register(paper,PaperAdmin)
 

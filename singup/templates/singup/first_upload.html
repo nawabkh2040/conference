@@ -6,8 +6,7 @@
      {% if user.is_authenticated %}
      <div class="container my-5">
              <form action"{% url 'submit' conf_id=v1 %}" enctype="multipart/form-data" class="col-10 mx-auto card p-3 shadow-lg"
-                     method="post"
-                     oninput='up2.setCustomValidity(up2.value != password.value ? "Passwords do not match." : "")' id="upload">
+                     method="post">
                       {% csrf_token %}
                      {% if error_message %} 
                       <p style="color: rgb(14, 226, 71);">{{ error_message }}</p> 
@@ -101,14 +100,13 @@
                      >
                      </div>
                      <div class="input-group mb-3">
-                             <input type="file" name="paper_upload" class="form-control" id="inputGroupFile02">
+                        <input type="file" name="pdf_upload" class="form-control" id="inputGroupFile02">
 
-                             <label class="input-group-text" for="inputGroupFile02">Upload Paper</label>
+                        <label class="input-group-text" for="inputGroupFile02">Upload</label>
 
-                     </div>
-                     
+                      </div>
                      <div class="col-auto">
-                             <button type="submit" class="btn btn-success my-3" onsubmit="conferenceList()">Submit</button>
+                             <button type="submit" class="btn btn-success my-3">Submit</button>
                      </div>
 
              </form>

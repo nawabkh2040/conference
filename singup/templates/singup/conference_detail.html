@@ -15,7 +15,7 @@
          <div class="mt-4">
              <h4 class="text-uppercase">Status: <span class="text-primary">{{ latest_paper.status }}</span></h4>
              <a class="btn btn-success mt-2" href="/media/{{ latest_paper.paper_upload }}">View Submitted Paper</a>
-             <a class="btn btn-warning mt-2" href="{% url 'upload' conf_id=conf_instance.id %}">Resubmit Paper</a>
+             <a class="btn btn-warning mt-2" href="{% url 'submit' conf_id=conf_instance.id %}">Resubmit Paper</a>
          </div>
          {% endwith %}
      {% else %}
