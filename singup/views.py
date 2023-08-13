@@ -189,11 +189,14 @@ def resubmit(request,paper_id):
         if request.method=="POST":
             paper_title=request.POST.get('title_paper')
             Auth_name=request.POST.get('Auth_name')
+            paper_keyword=request.POST.get('paper_keyword')
             paper_description=request.POST.get('paper_description')
             pdf_upload = request.FILES.get('pdf_upload')
+            print(paper_keyword)
             resubmit_paper=paper(
                 user=original_paper.user,
                 status=original_paper.status,
+                paper_keyword=paper_keyword,
                 conference=original_paper.conference,
                 title_paper=paper_title,
                 Auth_name=Auth_name,

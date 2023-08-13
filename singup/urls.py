@@ -27,7 +27,7 @@ urlpatterns = [
     path('activate/<str:uidb64>/<str:token>/',views.activate,name="activate"),
     path('success/conference_detail/<int:conf_id>/submit/',views.submit_paper,name="submit"),
     path('success/conference_detail/resubmit/<int:paper_id>',views.resubmit,name="resubmit"),
-    path('success/list-of-Papers/<int:conf_id>',views.list_of_paper,name="list_of_paper"),
+    path('success/list-of-Papers/<int:conf_id>/',views.list_of_paper,name="list_of_paper"),
     path('success/list-of-conference/',views.list_of_conference,name="list_of_conference"), 
     path('success/conference_detail/<int:conf_id>/', views.conference_detail, name='conference_detail'),
 ]
