@@ -132,7 +132,9 @@ def activate(request, uidb64, token):
         login(request,my_user)
         return redirect('success')
     else:
+   
         return render(request,'singup/activation-failed.html')
+"""
 
 def upload(request, conf_id):
     if request.user.is_authenticated:
@@ -187,6 +189,61 @@ def upload(request, conf_id):
         return render(request, 'singup/upload.html',context)
     else:
         return render(request, 'singup/singIn.html')
+
+"""
+
+def submit_paper(request,conf_id):
+    if request.user.is_authenticated:
+        user = request.user
+        conf_instance = get_object_or_404(conference, id=conf_id)
+        if request.method=="POST":
+            user=request.user
+            title_paper=request.POST.get('title_paper')
+            Auth_name=request.POST.get('Auth_name')
+            Auth_email=request.POST.get('Auth_email')
+            Auth_affiliation=request.POST.get('Auth_affiliation')
+            Auth_mobile=request.POST.get('Auth_mobile')
+            corresponding_auth_name=request.POST.get('corresponding_auth_name')
+            corresponding_auth_email=request.POST.get('corresponding_auth_email')
+            corresponding_auth_affiliation=request.POST.get('corresponding_auth_affiliation')
+            corresponding_auth_mobile=request.POST.get('corresponding_auth_mobile')
+            other_auth_name=request.POST.get('other_auth_name')
+            other_auth_email=request.POST.get('other_auth_email')
+            other_auth_affiliation=request.POST.get('other_auth_affiliation')
+            other_auth_mobile=request.POST.get('other_auth_mobile')
+            paper_keyword=request.POST.get('paper_keyword')
+            paper_description=request.POST.get('paper_description')
+            paper_upload=request.POST.get('paper_upload')
+            new_paper=paper.objects.create(
+                title_paper=title_paper,Auth_name=Auth_name,
+                paper_description=paper_description,
+                Auth_email=Auth_email,Auth_affiliation=Auth_affiliation,
+                Auth_mobile=Auth_mobile,corresponding_auth_name=corresponding_auth_name,
+                corresponding_auth_email=corresponding_auth_email,
+                corresponding_auth_affiliation=corresponding_auth_affiliation,
+                corresponding_auth_mobile=corresponding_auth_mobile,other_auth_name=other_auth_name,
+                other_auth_email=other_auth_email,other_auth_affiliation=other_auth_affiliation,
+                other_auth_mobile=other_auth_mobile,paper_keyword=paper_keyword,
+                paper_upload=paper_upload,
+                status='pending',
+                conference=conf_instance,
+            )
+            conf_instance.has_uploaded_paper = True
+            new_paper.save()
+            context = {
+                'error_message': 'Successfully Upload Your Paper',
+                'v1':conf_instance.id,
+                }
+            return render(request, 'singup/first_upload.html',context)
+        else:
+            context ={
+                'v1':conf_instance.id,
+                'uname' : user.name,
+            }
+            return render(request, 'singup/first_upload.html',context)
+    else:
+        return redirect('signIn')
+
 
 def list_of_paper(request):
     if request.user.is_authenticated:

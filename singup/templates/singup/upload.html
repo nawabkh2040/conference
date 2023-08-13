@@ -3,7 +3,7 @@
 {% block body %}
 {% if user.is_authenticated %}
 <div class="container my-5">
-        <form action="{% url 'upload' conf_id=v1 %}" class="col-10 mx-auto card p-3 shadow-lg"  enctype="multipart/form-data" method="post">
+        <form action="{% url 'submit' conf_id=v1 %}" class="col-10 mx-auto card p-3 shadow-lg"  enctype="multipart/form-data" method="post">
                 {% csrf_token %}
                 {% if error_message %}
                 <p style="color: rgb(14, 226, 71);">{{ error_message }}</p>
@@ -38,9 +38,6 @@
                 </div>
                 <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Expiry Date</label>
-                        <!-- <br> -->
-                        <!-- <p>Expiry Date</p>
-                                        <br> -->
                         <input class="form-control input-group date" name="expiry_date" type="date" id="date">
                 </div>
                 <div class="col-auto">

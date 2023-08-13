@@ -6,9 +6,6 @@ from login.models import conference
 from login.models import conference
 
 
-
-
-
 class CustomUserManager(BaseUserManager):
      def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -61,7 +58,6 @@ class paper(models.Model):
         )
      status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
      has_uploaded_paper = models.BooleanField(default=False)
-    #  conference = models.ForeignKey(conference, on_delete=models.CASCADE,related_name='papers')
      conference = models.ForeignKey(
         conference,
         on_delete=models.CASCADE,
@@ -73,9 +69,4 @@ class paper(models.Model):
      def __str__(self):
           return self.title_paper
 
-
-# class profile(models.Model):
-#     user = models.OneToOneField("CustomUser", on_delete=models.CASCADE,)
-#     email_token = models.CharField(max_length=220, default="Not Available")
-#     is_verified = models.BooleanField(default=False)
 
