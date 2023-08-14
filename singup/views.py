@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 # from .backends import CustomBackend
 from django.contrib import messages
 import smtplib
+import pandas as pd
 from .models import *
 from django.core.mail import send_mail
 from django.conf import settings
@@ -22,8 +23,36 @@ from django.utils.encoding import *
 from django.shortcuts import render, get_object_or_404, redirect
 
 
+def download_papers_excel(request):
+    papers = paper.objects.all()  # Fetch all paper objects
 
-# Create your views here.
+    # Create a DataFrame to hold the data
+    data = {
+        'Paper Id': [paper.id for paper in papers],
+        'Paper Title': [paper.title_paper for paper in papers],
+        'Paper Version': [f'v{paper.version}' for paper in papers],
+        'Auth Name': [paper.Auth_name for paper in papers],
+        'Conference Name': [paper.conference for paper in papers],
+        'User Email': [paper.user for paper in papers],
+        'Paper Description': [paper.paper_description for paper in papers],
+        'Paper Upload': [paper.paper_upload.url for paper in papers],
+        'Date Of Submit': [paper.start_date for paper in papers],
+    }
+
+    df = pd.DataFrame(data)
+
+    # Create an Excel writer
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=papers.xlsx'
+    writer = pd.ExcelWriter(response, engine='xlsxwriter')
+
+    # Convert the DataFrame to an XlsxWriter Excel object
+    df.to_excel(writer, sheet_name='Papers', index=False)
+
+    # Close the Pandas Excel writer and output the Excel file to the response
+    writer.save()
+
+    return response
 
 
 
