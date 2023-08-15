@@ -83,4 +83,44 @@ class paper(models.Model):
      def __str__(self):
           return self.title_paper
 
+class resubmit_papers(models.Model):
 
+    paper_id=models.IntegerField()
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, default=None)
+    title_paper=models.CharField(max_length=70)
+    Auth_name=models.CharField(max_length=70)
+    paper_description=models.CharField(max_length=500)
+    paper_upload=models.FileField(upload_to='papers/')
+    start_date=models.DateTimeField(default=timezone.now)
+    #  expiry_date=models.CharField(max_length=20)
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+        )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    has_uploaded_paper = models.BooleanField(default=False)
+    conference = models.ForeignKey(
+        conference,
+        on_delete=models.CASCADE,
+        default=None,
+        null=True,
+        related_name='paper'
+    )
+    Auth_email = models.EmailField(default='example@example.com')
+    Auth_affiliation = models.CharField(max_length=100, default='No affiliation')
+    Auth_mobile = models.CharField(max_length=20, default='N/A')
+    corresponding_auth_name = models.CharField(max_length=100, default='Unknown')
+    corresponding_auth_email = models.EmailField(default='corresponding@example.com')
+    corresponding_auth_affiliation = models.CharField(max_length=100, default='No affiliation')
+    corresponding_auth_mobile = models.CharField(max_length=20, default='N/A')
+    other_auth_name = models.CharField(max_length=100, default='Unknown')
+    other_auth_email = models.CharField(max_length=150,default='other@example.com')
+    other_auth_affiliation = models.CharField(max_length=100, default='No affiliation')
+    other_auth_mobile = models.CharField(max_length=20, default='N/A')
+    paper_keyword = models.CharField(max_length=100, default='No keywords')
+    version = models.PositiveIntegerField(default=1)
+    
+
+    def __str__(self):
+        return self.title_paper

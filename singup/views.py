@@ -2,7 +2,7 @@ from base64 import urlsafe_b64decode, urlsafe_b64encode
 from collections import UserDict, UserList
 from django.shortcuts import render , redirect , get_object_or_404
 from django.http import HttpResponse
-from .models import  CustomUser,CustomUserManager , paper
+from .models import  CustomUser,CustomUserManager , paper ,resubmit_papers
 from django.contrib.auth import authenticate, login , logout
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
@@ -211,6 +211,56 @@ def resubmit(request, conf_id):
         return render(request, 'singup/singIn.html')
 
 """
+def re_resubmit(request,re_paper_id):
+    if request.user.is_authenticated:
+        user = request.user
+        original_paper = get_object_or_404(resubmit_papers, id=re_paper_id)
+        if request.method=="POST":
+            paper_title=request.POST.get('title_paper')
+            Auth_name=request.POST.get('Auth_name')
+            paper_keyword=request.POST.get('paper_keyword')
+            paper_description=request.POST.get('paper_description')
+            pdf_upload = request.FILES.get('pdf_upload')
+            print(original_paper)
+            re_resubmit_paper=resubmit_papers(
+                paper_id=original_paper.paper_id,
+                user=original_paper.user,
+                status='pending',
+                paper_keyword=paper_keyword,
+                conference=original_paper.conference,
+                title_paper=paper_title,
+                Auth_name=Auth_name,
+                paper_description=paper_description,
+                paper_upload=pdf_upload,
+                Auth_affiliation=original_paper.Auth_affiliation,
+                Auth_email=original_paper.Auth_email,
+                Auth_mobile=original_paper.Auth_mobile,
+                corresponding_auth_name=original_paper.corresponding_auth_name,
+                corresponding_auth_email=original_paper.corresponding_auth_email,
+                corresponding_auth_mobile=original_paper.corresponding_auth_mobile,
+                corresponding_auth_affiliation=original_paper.corresponding_auth_affiliation,
+                other_auth_mobile=original_paper.other_auth_mobile,
+                other_auth_email=original_paper.other_auth_email,
+                other_auth_name=original_paper.other_auth_name,
+                other_auth_affiliation=original_paper.other_auth_affiliation,
+                version=original_paper.version + 1
+
+            )
+            re_resubmit_paper.save()
+            context = {
+                'error_message': 'Successfully Upload Your Paper',
+                "original_paper":get_object_or_404(resubmit_papers, id=re_paper_id),
+                "fname":user.name,
+                }
+            return render(request, 'singup/resubmit.html',context)
+            
+        context={
+            "original_paper":get_object_or_404(resubmit_papers, id=re_paper_id),
+            "user":request.user,
+            "fname":user.name,
+        }
+        return render(request,'singup/re_resubmit.html',context)
+
 def resubmit(request,paper_id):
     if request.user.is_authenticated:
         user = request.user
@@ -222,9 +272,10 @@ def resubmit(request,paper_id):
             paper_description=request.POST.get('paper_description')
             pdf_upload = request.FILES.get('pdf_upload')
             print(paper_keyword)
-            resubmit_paper=paper(
+            resubmit_paper=resubmit_papers(
+                paper_id=original_paper.id,
                 user=original_paper.user,
-                status=original_paper.status,
+                status='pending',
                 paper_keyword=paper_keyword,
                 conference=original_paper.conference,
                 title_paper=paper_title,
@@ -325,7 +376,8 @@ def list_of_paper(request,conf_id):
     if request.user.is_authenticated:
         user = request.user
         context={
-            'papers_uploaded':paper.objects.filter(user=user,conference_id=conf_id)
+            'papers_uploaded':paper.objects.filter(user=user,conference_id=conf_id),
+            'reupload_paper':resubmit_papers.objects.filter(user=user,conference_id=conf_id),
         }
         return render(request, 'singup/list_of_paper.html',context)
     else:

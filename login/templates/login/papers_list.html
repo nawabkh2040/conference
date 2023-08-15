@@ -7,6 +7,7 @@
 
           {% if paper %}
           <div class="container my-4">
+            <h2 style="text-align: center;" >Submitted Papers</h2>
                <table class="table table-bordered">
                    <thead class="thead-dark">
                        <tr>
@@ -57,8 +58,64 @@
                        {% endfor %}
                    </tbody>
                </table>
-           </div>           
+           </div>   
+           {% if reupload_paper %}
+           <div class="container my-4">
+            <h2 style="text-align: center;" >Resubmitted Papers</h2>
+               <table class="table table-bordered">
+                   <thead class="thead-dark">
+                       <tr>
+                           <th scope="col">Paper Id</th>
+                           <th scope="col">Paper Title</th>
+                           <th scope="col">Paper Version</th>
+                           <th scope="col">Auth Name</th>
+                           <th scope="col">Conference Name</th>
+                           <th scope="col">User Email</th>
+                           <th scope="col">Paper Description</th>
+                           <th scope="col">Paper</th>
+                           <th scope="col">Date Of Submit</th>
+                           {% comment %} <th scope="col">Status</th> {% endcomment %}
+                           <th scope="col">Modify Status</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       {% for reupload_paper in reupload_paper %}
+                       <tr>
+                           <th scope="row">{{ reupload_paper.paper_id }}</th>
+                           <td>{{ reupload_paper.title_paper }}</td>
+                           <td>v{{ reupload_paper.version }}</td>
+                           <td>{{ reupload_paper.Auth_name }}</td>
+                           <td>{{ reupload_paper.conference }}</td>
+                           <td>{{ reupload_paper.user }}</td>
+                           <td>{{ reupload_paper.paper_description }}</td>
+                           <td><a href="/media/{{ reupload_paper.paper_upload }}">{{ reupload_paper.paper_upload }}</a></td>
+                           <td>{{ reupload_paper.start_date }}</td>
+                           {% comment %} <td>{{ paper.expiry_date }}</td> {% endcomment %}
+                           {% comment %} <td style="text-transform: capitalize;">{{ paper.status }}</td> {% endcomment %}
+                           {% comment %} <td style="text-transform: capitalize;">{{reupload_paper.status}}</td> {% endcomment %}
+                           <td>
+                              <form method="post" action="{% url 'resubmit_paper_status' selected_paper_id=reupload_paper.id %}">
+                                  {% csrf_token %}
+                                  <div class="input-group d-flex justify-content-center">
+                                      <select class="form-select" name="status" style="width: auto;">
+                                          {% for choice in reupload_paper.STATUS_CHOICES %}
+                                          <option value="{{ choice.0 }}" {% if choice.0 == reupload_paper.status %}selected{% endif %}>
+                                              {{ choice.1 }}
+                                          </option>
+                                          {% endfor %}
+                                      </select>
+                                      <button class="btn btn-primary my-1" style="border-radius: 10px;" type="submit">Update</button>
+                                  </div>
+                              </form>
+                          </td>                                                   
+                       </tr>
+                       {% endfor %}
+                   </tbody>
+               </table>
+           </div>   
+           {% endif %}    
           {% else %}
                <h4 class="my-4" style="text-align: center;color: red;" >No Paper Is Publish Here Yet</h4>
+            
      {% endif %}
 {% endblock body %}

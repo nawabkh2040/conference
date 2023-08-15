@@ -23,6 +23,7 @@ urlpatterns = [
     path("dashboard/",views.dashboard,name="dashboard"),
     path('dashboard/list-of-paper/<int:conference__id>/',views.list_of_paper,name="list-of-paper"),
     path('dashboard/list-of-paper/update-paper-status/<int:selected_paper_id>/', views.update_paper_status, name='update_paper_status'),
+    path('dashboard/list-of-paper/resubmit_paper_status/<int:selected_paper_id>/', views.resubmit_paper_status, name='resubmit_paper_status'),
     path('dashboard/create-conference/',views.create_conference,name="create_conference"),
     path('dashboard/list-of-conference/',views.list_of_conference,name="list-of-conference"),
     path('logout/',views.logout_Admin,name="logout_Admin"),

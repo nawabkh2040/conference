@@ -3,7 +3,7 @@
 {% block body %}
 {% if user.is_authenticated %}
 <div class="container my-5">
-        <form action="{% url 'resubmit' paper_id=original_paper.id %}" class="col-10 mx-auto card p-3 shadow-lg"  enctype="multipart/form-data" method="post">
+        <form action="{% url 're_resubmit' re_paper_id=original_paper.id %}" class="col-10 mx-auto card p-3 shadow-lg"  enctype="multipart/form-data" method="post">
                 {% csrf_token %}
                 {% if error_message %}
                 <p style="color: rgb(14, 226, 71);">{{ error_message }}</p>
@@ -46,8 +46,8 @@
                         <button type="submit" class="btn btn-success my-3">Submit</button>
                         <a class="btn btn-secondary mx-2" href="../../../">Back</a>
                 </div>
-
         </form>
 </div>
+
 {% endif %}
 {% endblock body %}

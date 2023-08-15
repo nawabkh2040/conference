@@ -2,10 +2,10 @@ from django.shortcuts import render , redirect ,get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth import *
 from .models import *
-from singup.models import  CustomUser,CustomUserManager
+from singup.models import  CustomUser,CustomUserManager 
 from django.contrib.auth import get_user_model 
 from django.contrib.auth.decorators import login_required
-from singup.models import paper
+from singup.models import paper ,resubmit_papers
 from django.contrib.auth import authenticate, login , logout 
 from login.models import conference
 # Create your views here ....
@@ -67,6 +67,7 @@ def list_of_paper(request, conference__id):
         user = request.user
         context={
             'paper':paper.objects.filter(conference_id=conference__id),
+            'reupload_paper':resubmit_papers.objects.filter(conference_id=conference__id),  
             'user':request.user
         }
         return render(request,'login/papers_list.html',context)
@@ -90,6 +91,16 @@ def update_paper_status(request, selected_paper_id):
         papers = get_object_or_404(paper, id=selected_paper_id)
         papers.status = new_status
         papers.save()
+        return redirect('list-of-conference')
+    else:
+        return redirect('login')
+def resubmit_paper_status(request, selected_paper_id):
+    if request.user.is_authenticated and request.method == 'POST':
+        new_status = request.POST.get('status')
+        print(new_status)
+        resubmit_paper = get_object_or_404(resubmit_papers, id=selected_paper_id)
+        resubmit_paper.status = new_status
+        resubmit_paper.save()
         return redirect('list-of-conference')
     else:
         return redirect('login')
