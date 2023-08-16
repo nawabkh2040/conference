@@ -151,10 +151,10 @@ AUTH_USER_MODEL = 'singup.CustomUser'
 
 # CSRF TRUST ORIGIN PLEASE EDIT IT
 
-CSRF_TRUSTED_ORIGINS = ['https://7549-2401-4900-51ef-8c02-7cd7-1923-d411-c2e1.ngrok-free.app','http://127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://crucial-gobbler-informed.ngrok-free.app','http://127.0.0.1']
 
 
 # ALLOW HOST 
-ALLOWED_HOSTS = ["localhost","127.0.0.1","0.0.0.0","192.168.90.2","169.254.190.155","192.168.56.1","7549-2401-4900-51ef-8c02-7cd7-1923-d411-c2e1.ngrok-free.app"]
+ALLOWED_HOSTS = ["localhost","127.0.0.1","0.0.0.0","192.168.90.2","169.254.190.155","192.168.56.1","crucial-gobbler-informed.ngrok-free.app"]
 
 
