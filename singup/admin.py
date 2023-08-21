@@ -9,7 +9,7 @@ from .models import *
 # admin.site.register(singup,SingUPAdmin)
 
 class PaperAdmin(admin.ModelAdmin):
-    list_display=('id','user','conference','title_paper','Auth_name','Auth_email','paper_description','paper_upload','start_date','status')
+    list_display=('id','user','conference','title_paper','Auth_name','Auth_email','paper_description','paper_upload','start_date','status','comment1','comment2','comment3')
     list_filter = ('status',)
 admin.site.register(paper,PaperAdmin)
 
@@ -19,6 +19,6 @@ class Resubmit_papers_admin(admin.ModelAdmin):
 admin.site.register(resubmit_papers,Resubmit_papers_admin)
 
 class CustomUserAdmin_by(admin.ModelAdmin):
-    list_display=('name','email','number','password','date','is_active','is_staff')
+    list_display=('name','id','email','number','password','date','is_active','is_staff','is_reviewer')
 
 admin.site.register(CustomUser,CustomUserAdmin_by)

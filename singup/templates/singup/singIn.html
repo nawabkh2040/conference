@@ -14,17 +14,54 @@
       integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
       crossorigin="anonymous"
     ></script>
-     <title>Sing In | User Sing In Page</title>
+     <title>Sing In | Auther Sing In Page</title>
 </head>
 <body>
-  <a class="btn btn-secondary mx-2" href="/">Back</a>
+    <nav class="navbar navbar-expand-lg bg-primary">
+      <style>
+          *a {
+              color: white;
+          }
+      </style>
+      <div class="container-fluid  ">
+          <a class="navbar-brand" style="color: white;" href="/">Conference</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+              aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                      <a class="nav-link" style="color: white;" href="/singup/">Auther Singup</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" style="color: white;" href="/singup/singin">Auther Singin</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="/reviewer/sing-up/">Reviewer Singup</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="/reviewer/sing-in/">Reviewer Singin</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="/login/">Admin LogIn</a>
+                  </li>
+                  <div class="d-flex">
+                      <a class="nav-link" style="color: white;" href="http://sdbc.ac.in/">Sushila Devi Bansal College
+                          Indore </a>
+                  </div>
+            </div>
+        </div>
+    </nav>
+  {% comment %} <a class="btn btn-secondary mx-2" href="/">Back</a> {% endcomment %}
      <div class="container mt-5">
           <form
             class="col-10 mx-auto card p-3 shadow-lg"
             action="/singup/singin/"
             method="post"
           >
-          <h1 style="text-align: center">User Sing In</h1>
+          <h1 style="text-align: center">Auther Sing In</h1>
           <br>
           {% if error_message %}
                <p style="color: rgb(216, 65, 65);" >{{ error_message }}</p>
@@ -64,7 +101,7 @@
             </div>
             <div class="col-auto">
               <button type="submit" class="btn btn-primary">Sing In</button>
-              <button type="submit" class="btn btn-primary"><a style="text-decoration: none; color: white;" href="../">Sing Up</a></button>
+              {% comment %} <button type="submit" class="btn btn-primary"><a style="text-decoration: none; color: white;" href="../">Sing Up</a></button> {% endcomment %}
             </div>
           </form>
      </div>

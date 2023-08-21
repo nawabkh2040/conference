@@ -29,6 +29,20 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class CustomUser(AbstractBaseUser,PermissionsMixin):
+    groups = models.ManyToManyField(
+        Group,
+        verbose_name=('groups'),
+        blank=True,
+        related_name='customuser_set',  # Add a related_name
+        related_query_name='user'
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        verbose_name=('user permissions'),
+        blank=True,
+        related_name='customuser_set',  # Add a related_name
+        related_query_name='user'
+    )
     name = models.CharField(max_length=70)
     email = models.EmailField(unique=True)
     number = models.CharField(max_length=15)
@@ -36,6 +50,7 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     date = models.DateTimeField(default=timezone.now)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_reviewer = models.BooleanField(default=False)
     objects = CustomUserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name', 'number']
@@ -78,6 +93,9 @@ class paper(models.Model):
      other_auth_mobile = models.CharField(max_length=20, default='N/A')
      paper_keyword = models.CharField(max_length=100, default='No keywords')
      version = models.PositiveIntegerField(default=1)
+     comment1 = models.CharField(max_length=500,default="Not Available")
+     comment2 = models.CharField(max_length=500,default="Not Available")
+     comment3 = models.CharField(max_length=500,default="Not Available")
     
 
      def __str__(self):
@@ -120,6 +138,9 @@ class resubmit_papers(models.Model):
     other_auth_mobile = models.CharField(max_length=20, default='N/A')
     paper_keyword = models.CharField(max_length=100, default='No keywords')
     version = models.PositiveIntegerField(default=1)
+    comment1 = models.CharField(max_length=500,default="Not Available")
+    comment2 = models.CharField(max_length=500,default="Not Available")
+    comment3 = models.CharField(max_length=500,default="Not Available")
     
 
     def __str__(self):

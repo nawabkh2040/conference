@@ -16,6 +16,7 @@ class conference(models.Model):
      conference_start_date = models.DateTimeField(default=timezone.now)
      conference_end_date = models.DateField()
      has_uploaded_paper = models.BooleanField(default=False)
+     
      def __str__(self):
           return self.conference_name
      

@@ -27,6 +27,7 @@ urlpatterns = [
     path('',views.index,name='index'),
     path('login/',include('login.urls')),
     path('singup/',include('singup.urls')),
+    path('reviewer/',include('reviewer.urls')),
 
 
 ]
