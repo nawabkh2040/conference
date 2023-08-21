@@ -28,9 +28,6 @@ SECRET_KEY = 'django-insecure-d-aazg@1s@%$#^k5efh!yhxu73xayo+7k^er)38bg@5cw%4rd9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'singup',
     'login',
+    'reviewer',
 ]
 
 MIDDLEWARE = [
@@ -85,7 +83,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -103,7 +100,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -140,7 +136,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'confrancsdbc@gmail.com'
+EMAIL_HOST_USER = 'conference@sdbc.ac.in'
 EMAIL_HOST_PASSWORD = 'maqvvisbsgeohazu'
 # Enter your password here
 EMAIL_PORT = 587
@@ -155,6 +151,9 @@ CSRF_TRUSTED_ORIGINS = ['https://crucial-gobbler-informed.ngrok-free.app','http:
 
 
 # ALLOW HOST 
-ALLOWED_HOSTS = ["localhost","127.0.0.1","0.0.0.0","192.168.90.2","169.254.190.155","192.168.56.1","crucial-gobbler-informed.ngrok-free.app"]
+ALLOWED_HOSTS = ["localhost","127.0.0.1","0.0.0.0","crucial-gobbler-informed.ngrok-free.app"]
 
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # Keep the default backend as well
+]
