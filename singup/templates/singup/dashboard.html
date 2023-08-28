@@ -5,46 +5,6 @@
 <center class="my-4" >
   <h1 class="text-uppercase">WellCome {{uname}} </h1>
 </center>
-
-{% comment %} <div class="container my-4">    
-  <table class="table table-bordered">
-       <thead>
-       <tr>
-            <th scope="col">S.No</th>
-            <th scope="col">List</th>
-            <th scope="col">Create</th>
-            <th scope="col">View</th>
-       </tr>
-       </thead>
-       <tbody>
-            <tr>
-                 <th scope="row">1</th>
-                 <td>Conference</td>
-                 <td>
-                      <button type="submit" class="btn btn-success"><a style="text-decoration: none;color: aliceblue;"
-                           href="/singup/success/list-of-conference/">List Conference</a></button>
-                 </td>
-                 <td>
-                      <button type="submit" class="btn btn-success"><a style="text-decoration: none;color: aliceblue;"
-                           href="/singup/success/list-of-conference/">View Conference</a></button>
-                 </td>
-            </tr>
-            <tr>
-                 <th scope="row">2</th>
-                 <td>Paper</td>
-                 <td><button type="submit" class="btn btn-success"><a style="text-decoration: none;color: aliceblue;"
-                      href="/singup/success/upload/">Submit A Paper</a></button>
-
-                 </td>
-                 <td>
-                      <button type="submit" class="btn btn-success"><a style="text-decoration: none;color: aliceblue;"
-                           href="/singup/success/list-of-Papers/">Submited Papers</a></button>
-                 </td>
-            </tr>
-       </tbody>
-  </table>
-</div> {% endcomment %}
-
 {% if conference %}
 <div class="container my-4">
      <table class="table table-bordered">
@@ -70,7 +30,8 @@
          </tbody>
      </table>
  </div>
- 
+{% else %}
+     <h1 style="text-align: center;color: red;" > No Conference Present Now </h1>
 {% endif %}
 
 {% endblock body %}

@@ -17,10 +17,11 @@ from django.contrib import admin
 from django.urls import path , include
 from conference import views
 from django.conf import settings
+from django.views.static import serve 
 from django.conf.urls.static import static
-admin.site.site_header = "SDBC Admin"
-admin.site.site_title = "SDBC Admin Portal"
-admin.site.index_title = "Welcome to SDBC DATABASE Portal"
+admin.site.site_header = "Conference Admin"
+admin.site.site_title = "Conference Admin Portal"
+admin.site.index_title = "Welcome to Conference DATABASE Portal Develope by Nawab khan"
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path("accounts/", include("django.contrib.auth.urls")),
@@ -30,5 +31,9 @@ urlpatterns = [
     path('reviewer/',include('reviewer.urls')),
 
 
-]
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

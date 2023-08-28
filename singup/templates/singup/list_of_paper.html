@@ -20,28 +20,32 @@
                               <th scope="col" style="width: 10%;" >Paper </th>
                               <th scope="col" style="width: 20%;" >Date Of Submit</th>
                               <th scope="col">Status</th>
-                              <th scope="col">comment 1 </th>
-                              <th scope="col">comment 2 </th>
-                              <th scope="col">comment 3 </th>
+                              <th scope="col">comments </th>
                               <th scope="col">Resubmit</th>
                          </tr>
                          </thead>
                          <tbody>
                          {% for paper in papers_uploaded %}
                               <tr>
-                                   <th scope="row">{{paper.id}}</th>
+                                   <th scope="row">ABC{{ paper.id|stringformat:"003d" }}</th>
                                    <td>{{paper.title_paper}}</td>
                                    <td>{{paper.conference}}</td>
                                    <th>v{{paper.version}}</th>
                                    <td>{{paper.Auth_name}}</td>
                                    <td>{{paper.paper_keyword}}</td>
                                    <td>{{paper.paper_description}}</td>
-                                   <td><a href="/media/{{paper.paper_upload}} style="width: 10%;" ">{{paper.paper_upload}}</a> </td>
+                                   <td><a href="/media/{{paper.paper_upload}}"style="width: 10%;" ">{{paper.paper_upload}}</a> </td>
                                    <td>{{paper.start_date}}</td>
                                    <td style="text-transform: capitalize;" >{{paper.status}}</td>
-                                   <td>{{paper.comment1}}</td>
-                                   <td>{{paper.comment2}}</td>
-                                   <td>{{paper.comment3}}</td>
+                                   <td>
+                                        {% for reviewer_id, comment in paper.reviewer_comments.items %}
+                                             {% if comment %}
+                                                  <div class="reviewer-comment my-3 p-3 border">
+                                                       <p>{{ comment }}</p>
+                                                  </div>
+                                             {% endif %}
+                                        {% endfor %}
+                                   </td>
                                    <td><a href="{% url 'resubmit' paper_id=paper.id %}"><button class="btn btn-primary">Resubmit</button></a></td>
                               </tr>
                          {% endfor %}
@@ -69,16 +73,14 @@
                          <th scope="col">Paper </th>
                          <th scope="col">Date Of Submit</th>
                          <th scope="col">Status</th>
-                         <th scope="col">comment 1 </th>
-                         <th scope="col">comment 2 </th>
-                         <th scope="col">comment 3 </th>
+                         <th scope="col">comments </th>
                          <th scope="col">Resubmit</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for reupload in reupload_paper %}
                          <tr>
-                              <th scope="row">{{reupload.paper_id}}</th>
+                              <th scope="row">ABC{{ reupload.paper_id|stringformat:"003d" }}</th>
                               <td>{{reupload.title_paper}}</td>
                               <td>{{reupload.conference}}</td>
                               <th>v{{reupload.version}}</th>
@@ -88,9 +90,15 @@
                               <td><a href="/media/{{reupload.paper_upload}} ">{{reupload.paper_upload}}</a> </td>
                               <td>{{reupload.start_date}}</td>
                               <td style="text-transform: capitalize;" >{{reupload.status}}</td>
-                              <td>{{reupload.comment1}}</td>
-                              <td>{{reupload.comment2}}</td>
-                              <td>{{reupload.comment3}}</td>
+                              <td>
+                                   {% for reviewer_id, comment in paper.reviewer_comments.items %}
+                                        {% if comment %}
+                                             <div class="reviewer-comment my-3 p-3 border">
+                                                  <p>{{ comment }}</p>
+                                             </div>
+                                        {% endif %}
+                                   {% endfor %}
+                              </td>
                               <td><a href="{% url 're_resubmit' re_paper_id=reupload.id %}"><button class="btn btn-primary">Resubmit</button></a></td>
                          </tr>
                     {% endfor %}

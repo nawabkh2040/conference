@@ -1,5 +1,5 @@
 {% extends 'login/base.html' %}
-{% block title %}{% endblock title %}
+{% block title %}Dashboard{% endblock title %}
 {% block body %}
 <div class="container my-4" style="text-align: center;" >
      <h1 class="text-uppercase" >WelCome Admin {{name}} </h1>
@@ -32,11 +32,11 @@
                     <td>Reviewer's</td>
                     <td>
                          <a style="text-decoration: none;color: aliceblue;"
-                              href="#/login/dashboard/create-conference/"><button type="submit" class="btn btn-success">View Reviewer</button></a>
+                              href="/login/dashboard/list-of-reviewer/"><button type="submit" class="btn btn-success">View Reviewer</button></a>
                     </td>
                     <td>
                          <a style="text-decoration: none;color: aliceblue;"
-                              href="#/login/dashboard/list-of-conference/"><button type="submit" class="btn btn-success">Assing Paper to Reviewer</button></a>
+                              href="/login/dashboard/Assing-paper/"><button type="submit" class="btn btn-success">Assing Paper to Reviewer</button></a>
                     </td>
                </tr>
           </tbody>

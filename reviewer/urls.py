@@ -27,5 +27,16 @@ urlpatterns = [
     path('dashboard/',views.dashboard_reviewer,name='reviewer-dashboard'),
     path('activate-reviewer/<str:uidb64>/<str:token>/',views.activate_reviewer,name="activate_reviewer"),
 
+    path('profile/<int:reviewer_id>/',views.reviewer_profile,name="profile"),
+
+    path('review-paper/<paper_id>/',views.paper_reviewer,name="paper_reviewer"),
+    path('paper-reviewer-resubmit/<paper_id>/',views.paper_reviewer_resubmit,name="paper_reviewer_resubmit"),
+
+    path('list-of-submitted-paper/',views.list_of_submitted_papers,name="list-of-submitted-paper"),
+    path('list-of-resubmitted-paper/',views.list_of_resubmitted_papers,name="list-of-resubmitted-paper"),
+
+
+
+
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

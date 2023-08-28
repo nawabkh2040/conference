@@ -1,9 +1,14 @@
 from django.db import models
+from reviewer.models import Reviewer_data
 from datetime import timezone
 from django.utils import *
 from django.contrib.auth.models import * 
 from login.models import conference
 from login.models import conference
+from django.db.models import JSONField
+import psycopg2
+
+
 
 
 class CustomUserManager(BaseUserManager):
@@ -50,7 +55,9 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     date = models.DateTimeField(default=timezone.now)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_auth =models.BooleanField(default=False)
     is_reviewer = models.BooleanField(default=False)
+    is_conference_admin =models.BooleanField(default=False)
     objects = CustomUserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name', 'number']
@@ -59,6 +66,7 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     username = models.CharField(max_length=70, null=True, blank=True)
      
 class paper(models.Model):
+    #  id 20231001
      user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, default=None)
      title_paper=models.CharField(max_length=70)
      Auth_name=models.CharField(max_length=70)
@@ -93,10 +101,14 @@ class paper(models.Model):
      other_auth_mobile = models.CharField(max_length=20, default='N/A')
      paper_keyword = models.CharField(max_length=100, default='No keywords')
      version = models.PositiveIntegerField(default=1)
-     comment1 = models.CharField(max_length=500,default="Not Available")
-     comment2 = models.CharField(max_length=500,default="Not Available")
-     comment3 = models.CharField(max_length=500,default="Not Available")
-    
+     comment1 = models.CharField(max_length=1000,default="Not Available")
+     comment2 = models.CharField(max_length=1000,default="Not Available")
+     comment3 = models.CharField(max_length=1000,default="Not Available")
+     reviewer_comments = models.JSONField(default=dict, blank=True)
+     assigned_reviewers = models.ManyToManyField(Reviewer_data, related_name='assigned_papers')
+     def assigned_reviewers_list(self):
+        return ', '.join([str(reviewer) for reviewer in self.assigned_reviewers.all()])
+        assigned_reviewers_list.short_description = 'Assigned Reviewers'
 
      def __str__(self):
           return self.title_paper
@@ -138,9 +150,16 @@ class resubmit_papers(models.Model):
     other_auth_mobile = models.CharField(max_length=20, default='N/A')
     paper_keyword = models.CharField(max_length=100, default='No keywords')
     version = models.PositiveIntegerField(default=1)
-    comment1 = models.CharField(max_length=500,default="Not Available")
-    comment2 = models.CharField(max_length=500,default="Not Available")
-    comment3 = models.CharField(max_length=500,default="Not Available")
+    comment1 = models.CharField(max_length=1000,default="Not Available")
+    comment2 = models.CharField(max_length=1000,default="Not Available")
+    comment3 = models.CharField(max_length=1000,default="Not Available")
+    reviewer_comments = models.JSONField(default=dict, blank=True)
+    def comment_for_reviewer(self, reviewer):
+        return self.comments.get(str(reviewer.id), "")
+    assigned_reviewers = models.ManyToManyField(Reviewer_data, related_name='resubmit_papers')
+    def assigned_reviewers_list(self):
+        return ', '.join([str(reviewer) for reviewer in self.assigned_reviewers.all()])
+        assigned_reviewers_list.short_description = 'Assigned Reviewers'
     
 
     def __str__(self):

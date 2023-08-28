@@ -9,18 +9,21 @@
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
           crossorigin="anonymous"></script>
-     <title>{% block title %}{% endblock title %} | User</title>
+     <title>{% block title %}{% endblock title %} | Author</title>
+     <style>
+          .navbar {
+               background-color: #09095fc9; /* Change navbar color here */
+          }
+          .navbar a {
+               color: white;
+          }
+     </style>
 </head>
 
 <body>
-     <nav class="navbar navbar-expand-lg bg-primary ">
-          <style>
-               *a {
-                    color: white;
-               }
-          </style>
-          <div class="container-fluid  ">
-               <a class="navbar-brand" style="color: white;" href="#">Conference</a>
+     <nav class="navbar navbar-expand-lg">
+          <div class="container-fluid">
+               <a class="navbar-brand" href="#">Conference</a>
                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -32,23 +35,12 @@
                               <a class="nav-link active" style="color: white;" aria-current="page" href="/singup/success/">Home</a>
                          </li>
                          <li class="nav-item">
-                              {% comment %} <a class="nav-link" style="color: white;" href="/singup/success/upload/list-of-Papers/">Paper Submited </a> {% endcomment %}
-                         </li>
-                         <li class="nav-item">
-                              {% comment %} <a class="nav-link" style="color: white;" href="/singup/success/upload/">Submit A Paper</a> {% endcomment %}
-                         </li>
-                         <li class="nav-item">
                               <a class="nav-link" style="color: white;" href="/singup/success/list-of-conference/">List of Conference</a>
                          </li>
-                         <li class="nav-item">
-                              <a class="nav-link" style="color: white;" href="#http://sdbc.ac.in/">Sushila Devi Bansal
-                                   College
-                                   Indore </a>
-                         </li>
+                    </ul>
                </div>
                <div class="d-flex">
-                    <a style="text-decoration: none;color: aliceblue;"
-                              href="/singup/success/logout/"><button type="submit" class="btn btn-danger">Logout</button></a>
+                    <a style="text-decoration: none;color: aliceblue;" href="/singup/success/logout/"><button type="submit" class="btn btn-danger">Logout</button></a>
                </div>
           </div>
      </nav>

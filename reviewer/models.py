@@ -1,9 +1,10 @@
 from django.db import models
+# from singup.models import CustomUserManager
 from django.utils import *
 from django.contrib.auth.models import *
 # from conference.settings import TIME_ZONE 
 from django.utils import timezone
-from singup.models import CustomUserManager
+
 
 # Create your models here.
 
@@ -31,15 +32,15 @@ class Reviewer_data(AbstractBaseUser,PermissionsMixin):
     email = models.EmailField(unique=True)
     reviewer_number = models.CharField(max_length=15)
     whats_app_number = models.CharField(max_length=15)
-    password = models.CharField(max_length=70)
+    password = models.CharField(max_length=250)
     date_reviewer = models.DateTimeField(default=timezone.now)
     photo_upload=models.FileField(upload_to='reviewer/profile-photos/')
     resume_upload=models.FileField(upload_to='reviewer/profile-resume/')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    # is_ok = models.BooleanField(default=False)
+    is_ok = models.BooleanField(default=False)
 
-    objects = CustomUserManager()
+    # objects = CustomUserManager()
     USERNAME_FIELD = 'email'
     PASSWORD_FIELD = 'password'
     REQUIRED_FIELDS = ['reviewer_name', 'reviewer_number']

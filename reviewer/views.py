@@ -4,7 +4,7 @@ from reviewer.models import Reviewer_data
 from django.contrib.auth import authenticate, login , logout
 from django.urls import reverse
 from reviewer.models import Reviewer_data
-from singup.models import CustomUser
+from singup.models import CustomUser , paper ,resubmit_papers
 from django.core.mail import send_mail
 import smtplib
 from django.conf import settings
@@ -15,8 +15,10 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import *
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
+
 
 def index(request):
     return render(request,'reviewer/index.html')
@@ -43,7 +45,7 @@ def sing_up_reviewer(request):
                 context = {'error_message': 'This email is already registered.'}
                 return render(request, 'reviewer/sing-up.html',context)
         else:
-             new_reviewer=Reviewer_data.objects.create_user(
+             new_reviewer=Reviewer_data.objects.create(
                   reviewer_name=full_name,highest_qualification=highest_qualification,experience=experience,designations=designations,organization=organization,reviewer_number=mobile_number,email=email_reviewer,whats_app_number=whats_app_number,password=password_reviewer,photo_upload=photo_upload,resume_upload=resume_upload,
              )
              new_reviewer.save()
@@ -123,15 +125,32 @@ def dashboard_reviewer(request):
         user=request.user
         fname=user.name
         if user.is_reviewer:
-            add_id=Reviewer_data.objects.get(email=user)
+            try:
+                reviewer=Reviewer_data.objects.get(email=user)
+            except Exception as e:
+                print(e)
+                logout(request)
+                return redirect('reviewer-sing-in')
             add_id_ok=user.id
-            add_id.reviewer_id=add_id_ok
-            add_id.save()
-            content ={
-                'user':user,
-                "fname":fname
-            }
-            return render(request,'reviewer/dashboard.html',content)
+            reviewer.reviewer_id=add_id_ok
+            reviewer.save()
+            if reviewer.is_ok:
+                reviewer_instance = get_object_or_404(Reviewer_data, email=user.email)
+                papers = paper.objects.filter(assigned_reviewers=reviewer_instance)
+                fname=reviewer.reviewer_name
+                reviewer=reviewer
+                content ={
+                'reviewer':reviewer,
+                'papers':papers,
+                }
+                return render(request,'reviewer/dashboard.html',content)
+            else:
+                content ={
+                    "user":user,
+                    "fname":fname,
+                    "message_error":"You Are Not Verify By Admin Wait or Contact With Admin"
+                }
+                return render(request,'reviewer/dashboard.html',content)
         else:
             print("User is ",fname,"Not Reviewer")
             logout(request)
@@ -142,3 +161,119 @@ def dashboard_reviewer(request):
 def sing_out_reviewer(request):
     logout(request)
     return redirect('reviewer-sing-in')
+
+def list_of_submitted_papers(request):
+    if request.user.is_authenticated: 
+        user=request.user
+        fname=user.name
+        if user.is_reviewer:
+            add_id=Reviewer_data.objects.get(email=user)
+            add_id_ok=user.id
+            add_id.reviewer_id=add_id_ok
+            add_id.save()
+            if add_id.is_ok:
+                reviewer_instance = get_object_or_404(Reviewer_data, email=user.email)
+                papers = paper.objects.filter(assigned_reviewers=reviewer_instance)
+                fname=add_id.reviewer_name
+                content ={
+                "add_id":add_id,
+                "papers" : papers,
+                }
+                return render(request,'reviewer/submitted_paper.html',content)
+            else:
+                content ={
+                    "user":user,
+                    "fname":fname,
+                    "message_error":"You Are Not Verify By Admin Wait or Contact With Admin"
+                }
+                return render(request,'reviewer/dashboard.html',content)
+        else:
+            print("User is ",fname,"Not Reviewer")
+            logout(request)
+            return redirect('reviewer-sing-in')
+    else :
+        return redirect('reviewer-sing-in')
+    
+def list_of_resubmitted_papers(request):
+    if request.user.is_authenticated: 
+        user=request.user
+        fname=user.name
+        if user.is_reviewer:
+            add_id=Reviewer_data.objects.get(email=user)
+            add_id_ok=user.id
+            add_id.reviewer_id=add_id_ok
+            add_id.save()
+            if add_id.is_ok:
+                reviewer_instance = get_object_or_404(Reviewer_data, email=user.email)
+                papers = resubmit_papers.objects.filter(assigned_reviewers=reviewer_instance)
+                fname=add_id.reviewer_name
+                content ={
+                "add_id":add_id,
+                "papers" : papers,
+                }
+                return render(request,'reviewer/resubmitted_paper.html',content)
+            else:
+                content ={
+                    "user":user,
+                    "fname":fname,
+                    "message_error":"You Are Not Verify By Admin Wait or Contact With Admin"
+                }
+                return render(request,'reviewer/dashboard.html',content)
+        else:
+            print("User is ",fname,"Not Reviewer")
+            logout(request)
+            return redirect('reviewer-sing-in')
+    else :
+        return redirect('reviewer-sing-in')
+    
+def paper_reviewer(request, paper_id):
+    if request.user.is_authenticated and request.user.is_reviewer:
+        try:
+            paper_instance = paper.objects.get(id=paper_id)
+        except paper.DoesNotExist:
+            return HttpResponse("Unknown Paper Id") # Handle the case when paper doesn't exist
+
+        if request.method == 'POST':
+            comment = request.POST.get('comment')
+            print("Review Submitted Comment : ",comment)
+            paper_instance.reviewer_comments[request.user.id] = comment
+            paper_instance.save()
+
+        context = {
+            "paper": paper_instance,
+        }
+        return render(request, 'reviewer/review_paper.html', context)
+
+    else:
+        return redirect('reviewer-sign-in')
+
+def paper_reviewer_resubmit(request, paper_id):
+    if request.user.is_authenticated and request.user.is_reviewer:
+        try:
+            paper_instance = resubmit_papers.objects.get(id=paper_id)
+        except paper.DoesNotExist:
+            return HttpResponse("Unknown Paper Id") # Handle the case when paper doesn't exist
+
+        if request.method == 'POST':
+            comment = request.POST.get('comment')
+            print("Review ReSubmitted Comment : ",comment)
+            paper_instance.reviewer_comments[request.user.id] = comment
+            paper_instance.save()
+
+        context = {
+            "paper": paper_instance,
+        }
+        return render(request, 'reviewer/review_resubmit_paper.html', context)
+
+    else:
+        return redirect('reviewer-sign-in')
+
+def reviewer_profile(request, reviewer_id):
+    if request.user.is_authenticated and request.user.is_reviewer:
+        reviewer_instance=Reviewer_data.objects.get(id=reviewer_id)   
+        context={
+            "reviewer" : reviewer_instance,
+        }    
+        return render(request,'reviewer/reviewer_profile.html',context)
+    else:
+        return redirect('reviewer-sign-in')

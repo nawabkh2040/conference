@@ -26,6 +26,14 @@ urlpatterns = [
     path('dashboard/list-of-paper/resubmit_paper_status/<int:selected_paper_id>/', views.resubmit_paper_status, name='resubmit_paper_status'),
     path('dashboard/create-conference/',views.create_conference,name="create_conference"),
     path('dashboard/list-of-conference/',views.list_of_conference,name="list-of-conference"),
+    path('dashboard/list-of-reviewer/',views.list_of_reviewer,name="list-of-reviewer"),
+    
+    path('dashboard/profile/<int:reviewer_id>/',views.reviewers_profile,name="reviewer_profile"),
+
+    path('dashboard/Assing-paper/',views.assign_paper,name="Assign_paper"),
+    path('dashboard/Assing-paper/<int:reviewer_id>/',views.list_of_paper_sing,name="Assign_reviewer_paper"),
+    path('dashboard/Assing-paper/resubmitted/<int:reviewer_id>/',views.list_of_paper_sing_re,name="Assign_reviewer_paper_re"),
+
     path('logout/',views.logout_Admin,name="logout_Admin"),
    
 ]
